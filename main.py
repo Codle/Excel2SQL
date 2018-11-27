@@ -5,6 +5,7 @@ import utils
 import glob
 import sqlite3
 import re
+import os
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-m', '--model', type=str, default='all', help='使用模式，可选有： all, append 两种')
@@ -62,10 +63,12 @@ def year_in_file_name(file_name):
 
 
 if __name__ == '__main__':
+    if not os.path.isdir(args.input):
+        os.mkdir(args.input)
 
     if args.model == 'all':
         # 获取文件名称，提取名称中的年份排序 由小到大
-        files = glob.glob(args.input+'/*版.xls')
+        files = glob.glob(args.input+'/*.xls')
         files = sorted(files, key=year_in_file_name)
 
         for file in files:
