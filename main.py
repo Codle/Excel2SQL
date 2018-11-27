@@ -63,8 +63,8 @@ def year_in_file_name(file_name):
 
 
 if __name__ == '__main__':
-    if not os.path.isdir(args.input):
-        os.mkdir(args.input)
+    if not os.path.isdir('unlock'):
+        os.mkdir('unlock')
 
     if args.model == 'all':
         # 获取文件名称，提取名称中的年份排序 由小到大
@@ -72,15 +72,16 @@ if __name__ == '__main__':
         files = sorted(files, key=year_in_file_name)
 
         for file in files:
+            print(file)
             try:
                 df = pd.read_excel(file)
             except xlrd.biffh.XLRDError:
                 new_excel = utils.unlock_excel_to_new_file(file, 'unlock/')
                 df = pd.read_excel(new_excel)
-                print(new_excel)
             cur_file_tables = utils.get_tables(df)
 
             save_to_sql(cur_file_tables)
+            print("添加成功")
     elif args.model == 'append':
 
         try:
@@ -92,3 +93,4 @@ if __name__ == '__main__':
         cur_file_tables = utils.get_tables(df)
 
         save_to_sql(cur_file_tables)
+        print("添加成功")
